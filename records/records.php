@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "group4_db");
+$conn = mysqli_connect("localhost", "root", "", "group1_db");
 if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);
 }
@@ -14,7 +14,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="records.css">
-    <title>GROUP 4_DB</title>
+    <title>GROUP 1_DB</title>
 </head>
 <body>
     <div class="container">
