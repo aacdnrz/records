@@ -164,7 +164,7 @@ $conn->close();
             <input type="submit" value="Insert">
         </form>
         <!-- Back button to return to index page -->
-        <a href="haha.php" class="back-button">Back</a>
+        <a href="group1_db.php" class="back-button">Back</a>
     </div>
 </body>
 </html>

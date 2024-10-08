@@ -26,6 +26,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Your CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -146,7 +147,7 @@ $result = $conn->query($sql);
 <body>
     <div class="container">
         <h2>STUDENT RECORDS</h2>
-        <form method="POST" action="">
+        <form method="POST" action="" onsubmit="return confirmDeletion()">
             <table>
                 <tr>
                     <th>Select</th>
@@ -180,3 +181,15 @@ $result = $conn->query($sql);
     <?php $conn->close(); ?>
 </body>
 </html>
+
+<script>
+        function confirmDeletion() {
+            const checked = document.querySelectorAll('input[name="student_numbers[]"]:checked').length;
+            if (checked > 0) {
+                return confirm("Are you sure you want to delete the selected records?");
+            } else {
+                alert("Please select at least one record to delete.");
+                return false;
+            }
+        }
+    </script>
