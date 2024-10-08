@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "group4_db");
+$conn = mysqli_connect("localhost", "root", "", "group1_db");
 if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);
 }
@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['student_numbers'])) {
     }
 }
 
-$sql = "SELECT `Student Number`, Name, Section FROM student_records";
+$sql = "SELECT `Student Number`, Name, Section FROM student_records ORDER BY Name ASC";
 $result = $conn->query($sql);
 ?>
 
@@ -26,6 +26,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        /* Your CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -141,12 +142,12 @@ $result = $conn->query($sql);
             color: red;
         }
     </style>
-    <title>GROUP 4_DB</title>
+    <title>GROUP 1_DB</title>
 </head>
 <body>
     <div class="container">
         <h2>STUDENT RECORDS</h2>
-        <form method="POST" action="">
+        <form method="POST" action="" onsubmit="return confirmDeletion()">
             <table>
                 <tr>
                     <th>Select</th>
@@ -180,3 +181,15 @@ $result = $conn->query($sql);
     <?php $conn->close(); ?>
 </body>
 </html>
+
+<script>
+        function confirmDeletion() {
+            const checked = document.querySelectorAll('input[name="student_numbers[]"]:checked').length;
+            if (checked > 0) {
+                return confirm("Are you sure you want to delete the selected records?");
+            } else {
+                alert("Please select at least one record to delete.");
+                return false;
+            }
+        }
+    </script>
