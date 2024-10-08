@@ -141,7 +141,7 @@ $result = $conn->query($sql);
             color: red;
         }
     </style>
-    <title>GROUP 4_DB</title>
+    <title>GROUP 1_DB</title>
 </head>
 <body>
     <div class="container">
