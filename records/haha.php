@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "group4_db");
+$conn = mysqli_connect("localhost", "root", "", "group1_db");
 if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);
 }
