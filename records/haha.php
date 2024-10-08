@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['student_numbers'])) {
     }
 }
 
-$sql = "SELECT `Student Number`, Name, Section FROM student_records";
+$sql = "SELECT `Student Number`, Name, Section FROM student_records ORDER BY Name ASC";
 $result = $conn->query($sql);
 ?>
 

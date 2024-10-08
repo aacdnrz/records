@@ -4,7 +4,7 @@ if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT `Student Number`, Name, Section FROM student_records";
+$sql = "SELECT `Student Number`, Name, Section FROM student_records ORDER BY Name ASC";
 $result = $conn->query($sql);
 ?>
 
