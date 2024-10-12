@@ -81,7 +81,7 @@ $result = $conn->query($sql);
 
         th, td {
             padding: 12px;
-            text-align: left;
+            text-align: center;
             border-bottom: 1px solid #ddd;
             font-size: 16px;
             color: #555;
