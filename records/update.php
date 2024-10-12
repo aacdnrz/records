@@ -1,9 +1,8 @@
 <?php
-// Start the session
 session_start();
 
 // Connect to the database
-$conn = mysqli_connect("localhost", "root", "", "maestro"); // Change database name as needed
+$conn = mysqli_connect("localhost", "root", "", "maestro"); 
 if ($conn->connect_error) {
     die("Connection Failed: " . $conn->connect_error);
 }
@@ -53,7 +52,6 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Styling for the entire page */
         * {
             margin: 0;
             padding: 0;
@@ -62,7 +60,7 @@ $conn->close();
 
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: white;
             color: #333;
             display: flex;
             justify-content: center;
@@ -73,12 +71,13 @@ $conn->close();
         }
 
         .form-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
+            background-color: #F5F5F5; /*1st*/
+            border: 2px solid black;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
         }
 
         .alert {
@@ -90,81 +89,75 @@ $conn->close();
             border-radius: 5px;
             margin-bottom: 20px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
         }
 
         .alert.success {
-            background-color: #4CAF50; /* Green background for success */
+            background-color: #4CAF50; /* green */
         }
 
         .alert.error {
-            background-color: #f44336; /* Red background for error */
+            background-color: #f44336; /* red */
         }
 
         h2 {
             text-align: center;
-            font-size: 36px;
-            color: #800020;
+            font-size: 30px;
+            color: #1F1F1F; /*4th*/
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
         }
 
         label {
             display: block;
             font-weight: bold;
             margin-bottom: 5px;
-            color: #333;
+            color: black;
         }
 
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            margin: 10px 0;
+            border: 1px solid black;
             border-radius: 5px;
-            font-size: 16px;
-            color: #333;
+            box-sizing: border-box;
         }
 
         input[type="submit"], .back-button {
             width: 100%;
             padding: 10px;
-            background-color: #800020;
-            color: #fff;
+            background-color: #1F1F1F; /*4th*/
+            color:  #F5F5F5; /*1st*/
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 18px;
-            margin-top: 10px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px; 
         }
 
         input[type="submit"]:hover, .back-button:hover {
-            background-color: #a83232;
+            background-color: black;
         }
     </style>
     <script>
-        // Function to hide the alert after a few seconds
         function hideAlert() {
             const alertBox = document.querySelector('.alert');
             if (alertBox) {
                 setTimeout(() => {
                     alertBox.style.display = 'none';
-                }, 2000); // 5000ms = 5 seconds
+                }, 2000); // 2000ms = 2 seconds
             }
         }
 
-        // Call the hideAlert function when the page loads
         window.onload = hideAlert;
     </script>
     <title>Update User Record</title>
 </head>
 <body>
-    <!-- Display alert message if any -->
     <?php if ($message): ?>
         <div class="alert <?php echo $messageClass; ?>">
             <?php echo $message; ?>
@@ -174,8 +167,10 @@ $conn->close();
     <div class="form-container">
         <h2>Update User Record</h2>
         <form method="POST" action="">
-            <label for="id">ID:</label>
-            <input type="text" id="id" name="id" required>
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($id ?? ''); ?>"> 
+
+            <label for="user_id">User ID:</label>
+            <input type="text" id="user_id" name="id" required>
 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -184,9 +179,8 @@ $conn->close();
             <input type="password" id="password" name="password" required>
 
             <input type="submit" value="Update">
+            <button type="button" class="back-button" onclick="window.location.href='manage.php'">Back</button>
         </form>
-        <!-- Back button to return to manage.php page -->
-        <a href="manage.php" class="back-button">Back</a>
-    </div>
+        </div>
 </body>
 </html>

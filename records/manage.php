@@ -17,14 +17,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_ids'])) {
     // Adjust the SQL to delete from the login table using the new structure
     $sql = "DELETE FROM login WHERE id IN ($userIdsList)";
     if ($conn->query($sql) === TRUE) {
-        $successMessage = "Selected records deleted successfully"; // Set success message
+        $successMessage = "Selected records deleted successfully"; 
     } else {
-        $errorMessage = "Error deleting records: " . $conn->error; // Set error message
+        $errorMessage = "Error deleting records: " . $conn->error;
     }
 }
 
-// Retrieve user records from the login table, ordered by ID
-$sql = "SELECT id, username, password FROM login ORDER BY id ASC"; // Keep this as is for numeric order
+$sql = "SELECT id, username, password FROM login ORDER BY id ASC"; 
 $result = $conn->query($sql);
 ?>
 
@@ -34,7 +33,6 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* Your CSS remains the same */
         * {
             margin: 0;
             padding: 0;
@@ -43,57 +41,79 @@ $result = $conn->query($sql);
 
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f0f0;
+            background-color: white;
             color: #333;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative; /* Add position relative to body for absolute positioning */
+            position: relative; 
         }
 
         h2 {
-            font-size: 36px;
-            color: #800020;
+            font-size: 40px;
+            color: #1F1F1F; /*4th*/
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             text-align: center;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
         }
 
         .container {
             width: 100%;
-            max-width: 1200px;
-            background-color: #fff;
-            padding: 20px;
+            max-width: 800px;
+            background-color: #F5F5F5; /*1st*/
+            padding: 35px;
             border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+            margin: auto;  
+            margin-top: 10px; 
+            margin-bottom: 10px; 
         }
 
         table {
             width: 100%;
+            max-width: 700px;
             border-collapse: collapse;
-            background-color: #fff;
-            margin-top: 10px;
-            overflow-x: auto;
-            border-radius: 8px;
+            background-color: #CCCCCC; /*2nd*/
+            margin: auto; 
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         th, td {
             padding: 12px;
             text-align: center;
             border-bottom: 1px solid #ddd;
-            font-size: 16px;
-            color: #555;
+            font-size: 15px;
+            color: black;
         }
 
         th {
-            background-color: #800020;
-            color: white;
+            background-color: black;
+            color: #F5F5F5; /*1st*/
+            font-size: 18px;
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            width: 5%; /* select */
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 20%; /* id */
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            width: 50%; /* username */
+        }
+
+        th:nth-child(4), td:nth-child(4) {
+            width: 25%; /* pass*/
         }
 
         tr:nth-child(even) {
-            background-color: #f8f8f8;
+            background-color: white;
         }
 
         td[colspan='4'] {
@@ -109,8 +129,8 @@ $result = $conn->query($sql);
         }
 
         .button-container button {
-            background-color: #800020;
-            color: #fff;
+            background-color: #1F1F1F; /*4th*/
+            color: #F5F5F5; /*1st*/
             border: none;
             padding: 10px 20px;
             margin: 0 10px;
@@ -120,34 +140,33 @@ $result = $conn->query($sql);
         }
 
         .button-container button:hover {
-            background-color: #a83232;
+            background-color: black;
         }
 
         input[type="checkbox"] {
             margin-right: 5px;
         }
 
-        /* Notification styles */
         .notification {
-            position: absolute; /* Position it absolutely */
-            top: 20px; /* Adjust top spacing */
-            right: 20px; /* Adjust right spacing */
+            position: absolute; 
+            top: 20px; 
+            right: 20px; 
             margin-top: 10px;
             font-weight: bold;
             padding: 10px;
             border-radius: 5px;
-            display: none; /* Initially hidden */
-            z-index: 1000; /* Ensure it's on top of other elements */
+            display: none; 
+            z-index: 1000; 
         }
 
         .success {
             color: green;
-            background-color: #e6ffe6; /* Light green background */
+            background-color: #e6ffe6; 
         }
 
         .error {
             color: red;
-            background-color: #ffe6e6; /* Light red background */
+            background-color: #ffe6e6; 
         }
     </style>
     <title>MAESTRO_DB</title>
@@ -158,10 +177,10 @@ $result = $conn->query($sql);
         <form method="POST" action="" onsubmit="return confirmDeletion()">
             <table>
                 <tr>
-                    <th>Select</th>
+                    <th>SELECT</th>
                     <th>ID</th>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <th>USERNAME</th>
+                    <th>PASSWORD</th>
                 </tr>
                 <?php
                 if ($result->num_rows > 0) {
@@ -170,7 +189,7 @@ $result = $conn->query($sql);
                         echo "<td><input type='checkbox' name='user_ids[]' value='" . $row["id"] . "'></td>";
                         echo "<td>" . $row["id"] . "</td>";
                         echo "<td>" . $row["username"] . "</td>";
-                        echo "<td>" . $row["password"] . "</td>"; // Be careful with displaying passwords!
+                        echo "<td>" . $row["password"] . "</td>"; 
                         echo "</tr>";
                     }
                 } else {
@@ -180,7 +199,7 @@ $result = $conn->query($sql);
             </table>
 
             <div class="button-container">
-                 <button type="button" onclick="location.href='insert.php'">INSERT</button>
+                <button type="button" onclick="location.href='insert.php'">INSERT</button>
                 <button type="button" onclick="location.href='update.php'">UPDATE</button>
                 <button type="submit">DELETE</button>
                 <button type="button" onclick="location.href='login.php'">EXIT</button> 
@@ -188,7 +207,6 @@ $result = $conn->query($sql);
         </form>
     </div>
 
-    <!-- Notification div to show messages -->
     <div id="notification" class="notification <?php echo $successMessage ? 'success' : ($errorMessage ? 'error' : ''); ?>">
         <?php
         if ($successMessage) {
@@ -200,13 +218,12 @@ $result = $conn->query($sql);
     </div>
 
     <script>
-        // Show the notification if there is a message and hide it after 5 seconds
         window.onload = function() {
             const notification = document.getElementById('notification');
             if (notification.innerHTML) {
-                notification.style.display = 'block'; // Show the notification
+                notification.style.display = 'block'; 
                 setTimeout(function() {
-                    notification.style.display = 'none'; // Hide after 5 seconds
+                    notification.style.display = 'none'; 
                 }, 2000);
             }
         };
