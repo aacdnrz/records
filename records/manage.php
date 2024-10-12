@@ -180,9 +180,10 @@ $result = $conn->query($sql);
             </table>
 
             <div class="button-container">
-                <button type="button" onclick="location.href='insert.php'">INSERT</button>
+                 <button type="button" onclick="location.href='insert.php'">INSERT</button>
                 <button type="button" onclick="location.href='update.php'">UPDATE</button>
                 <button type="submit">DELETE</button>
+                <button type="button" onclick="location.href='login.php'">EXIT</button> 
             </div>
         </form>
     </div>
