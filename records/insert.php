@@ -1,9 +1,9 @@
 <?php
 // Step 1: Connect to the database
-$servername = "localhost"; // Database server
-$username = "root"; // Database username
-$password = ""; // Database password
-$dbname = "maestro"; // Database name
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "maestro";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -12,12 +12,12 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$message = ""; // Initialize message variable
-$messageClass = ""; // Initialize CSS class for the alert
+$message = "";
+$messageClass = "";
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $userId = $_POST['user_id']; // New field for user ID
+    $userId = $_POST['user_id'];
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -27,27 +27,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($checkResult->num_rows == 0) {
         // Username does not exist, proceed with the insert
-        $insertSql = "INSERT INTO login (id, username, password) VALUES ('$userId', '$username', '$password')";
+        if (empty($userId)) {
+            // Insert without the id field to allow auto-increment
+            $insertSql = "INSERT INTO login (username, password) VALUES ('$username', '$password')";
+        } else {
+            // Insert with the id field provided
+            $insertSql = "INSERT INTO login (id, username, password) VALUES ('$userId', '$username', '$password')";
+        }
+
         if ($conn->query($insertSql) === TRUE) {
-            // Set a session variable for success message
             session_start();
-            $_SESSION['message'] = "User Updated Successfully!";
+            $_SESSION['message'] = "User added successfully!";
             $_SESSION['messageClass'] = "success";
-            // Redirect to manage.php
             header("Location: manage.php");
             exit();
         } else {
             $message = "Error adding user: " . $conn->error;
-            $messageClass = "error"; // Set alert color to red for errors
+            $messageClass = "error";
         }
     } else {
-        // Username already exists, show invalid input alert
         $message = "Username already exists!";
-        $messageClass = "error"; // Set alert color to red for invalid input
+        $messageClass = "error";
     }
 }
 
-// Close connection
 $conn->close();
 ?>
 
@@ -152,7 +155,6 @@ $conn->close();
     </style>
 </head>
 <body>
-    <!-- Display alert message if any -->
     <?php if ($message): ?>
         <div class="alert <?php echo $messageClass; ?>">
             <?php echo $message; ?>
@@ -162,8 +164,8 @@ $conn->close();
     <div class="form-container">
         <h2>Insert User Record</h2>
         <form method="POST" action="">
-            <label for="user_id">ID:</label>
-            <input type="text" id="user_id" name="user_id" required>
+            <label for="user_id">ID (optional):</label>
+            <input type="text" id="user_id" name="user_id">
 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -173,7 +175,6 @@ $conn->close();
 
             <input type="submit" value="Insert">
         </form>
-        <!-- Back button to return to the previous page -->
         <a href="manage.php" class="back-button">Back</a>
     </div>
 </body>
