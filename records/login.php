@@ -28,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check if the password matches
         if ($row['password'] == $input_password) {
             $login_successful = true; // Set login success flag
+            // Redirect to manage.php after successful login
+            header('Location: manage.php');
+            exit(); // Terminate script after redirection
         } else {
             $message = "<p style='color: red; text-align: center;'>Password is not correct</p>";
         }
@@ -96,10 +99,7 @@ $conn->close();
 <body>
     <div class="container">
         <?php
-        if ($login_successful) {
-            // If login is successful, show the success message
-            echo "<h2 class='success-message'>Access granted!!!</h2>";
-        } else {
+        if (!$login_successful) {
             // If login failed or hasn't been attempted, show the form
             echo "<h2>Login</h2>";
             echo '<form method="POST">';
