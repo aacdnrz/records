@@ -50,7 +50,7 @@ $conn->close();
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #ffffff, #ffe8e5, #ffd2cb, #ffbbb1, #ffa399, #ff8b81, #ff7169, #ff5353);
             margin: 0;
             display: flex;
             justify-content: center;
@@ -60,35 +60,50 @@ $conn->close();
         h2 {
             color: maroon;
             text-align: center;
+            font-weight: bolder;
+            font-size:2.2rem;
         }
         .container {
-            background-color: #ffeb99; /* Mustard background */
-            border: 2px solid maroon;
             border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 350px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+        h3{
+            font-weight: bold;
+            font-size: 1.1rem;
+            color:#000;
         }
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border: 1px solid maroon;
+            margin: 8px 0;
+            border-style: none;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
             border-radius: 5px;
             box-sizing: border-box;
+            font-size: 1rem;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            box-shadow: 0px 0px 15px rgba(152, 43, 28, 0.5); /* Change shadow on focus */
+            border: 1px solid #982B1C; /* Add border on focus */
+            outline: none; /* Remove default outline */
         }
         input[type="submit"] {
             background-color: maroon;
-            color: #ffeb99; /* Mustard text color */
+            color: #f2f2f2;
             padding: 10px;
             border: none;
             border-radius: 5px;
             width: 100%;
             font-weight: bold;
             cursor: pointer;
+            font-size: 1.2rem;
         }
         input[type="submit"]:hover {
-            background-color: #a94442; /* Darker maroon on hover */
+            background-color: #ff5353; /* Darker maroon on hover */
+            color:#000;
         }
         .success-message {
             color: green;
@@ -101,11 +116,11 @@ $conn->close();
         <?php
         if (!$login_successful) {
             // If login failed or hasn't been attempted, show the form
-            echo "<h2>Login</h2>";
+            echo "<h2>Log In</h2>";
             echo '<form method="POST">';
-            echo 'Username: <input type="text" name="username" required><br><br>';
-            echo 'Password: <input type="password" name="password" required><br><br>';
-            echo '<input type="submit" value="Login">';
+            echo '<h3>Username: <input type="text" name="username" required><br><br></h3>';
+            echo '<h3>Password: <input type="password" name="password" required><br><br></h3>';
+            echo '<input type="submit" value="Log in">';
             echo '</form>';
             echo $message; // Display any error messages
         }
