@@ -1,5 +1,4 @@
 <?php
-// Step 1: Connect to the database
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -11,120 +10,126 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$login_successful = false; // Flag to check if login is successful
-$message = ''; // Variable to store error or success message
+$login_successful = false; 
+$message = ''; 
 
-// Step 2: Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $input_username = $_POST['username'];
     $input_password = $_POST['password'];
 
-    // Check if the username exists
     $sql = "SELECT * FROM login WHERE username = '$input_username'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        // Check if the password matches
         if ($row['password'] == $input_password) {
-            $login_successful = true; // Set login success flag
-            // Redirect to manage.php after successful login
-            header('Location: manage.php');
-            exit(); // Terminate script after redirection
+            $login_successful = true; 
+            header("Location: manage.php"); 
+            exit(); 
         } else {
-            $message = "<p style='color: red; text-align: center;'>Password is not correct</p>";
+            $message = "<p style='color: red; font-weight: bold; text-align: center; margin: 20px;'>Password is not correct</p>";
         }
     } else {
-        $message = "<p style='color: red; text-align: center;'>Username does not exist</p>";
+        $message = "<p style='color: red; font-weight: bold; text-align: center; margin: 20px;'>Username does not exist</p>";
     }
 }
 
 $conn->close();
 ?>
 
-<!-- HTML for login form and success message -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Login</title>
     <style>
+        * {
+            font-family:  'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ffffff, #ffe8e5, #ffd2cb, #ffbbb1, #ffa399, #ff8b81, #ff7169, #ff5353);
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(195, 136, 137, 1),  rgba(181,11,12,1));
             margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
+
         h2 {
-            color: maroon;
-            text-align: center;
+            font-size: 40px; 
+            color: #7E0001; /*4th*/
+            text-shadow: 5px 2px 5px rgba(126, 0, 1, 0.3);
             font-weight: bolder;
-            font-size:2.2rem;
+            text-align: center;
+            margin-bottom: 25px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px;
         }
+
         .container {
-            border-radius: 10px;
-            padding: 25px;
-            width: 350px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px; 
+            background-color: #FFFFFF; /*1st*/
+            border: 2px solid #7E0001;
+            border-radius: 15px;
+            padding: 35px; 
+            box-shadow: 10px 10px 15px rgba(126, 0, 1, 0.3); 
         }
-        h3{
-            font-weight: bold;
-            font-size: 1.1rem;
-            color:#000;
-        }
+
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin: 8px 0;
-            border-style: none;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-            border-radius: 5px;
+            margin: 10px 0;
+            border: 1.5px solid black;
+            border-radius: 10px;
             box-sizing: border-box;
-            font-size: 1rem;
         }
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            box-shadow: 0px 0px 15px rgba(152, 43, 28, 0.5); /* Change shadow on focus */
-            border: 1px solid #982B1C; /* Add border on focus */
-            outline: none; /* Remove default outline */
-        }
+
         input[type="submit"] {
-            background-color: maroon;
-            color: #f2f2f2;
+            background-color: #7E0001; /*4th*/
+            color:  #FFFFFF; /*1st*/
             padding: 10px;
             border: none;
-            border-radius: 5px;
-            width: 100%;
-            font-weight: bold;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 1.2rem;
+            width: 150px;
+            margin-left: 95px;
+            font-size: 15px;
+            font-weight: bold;  
+            transition: 0.3s;
         }
+
         input[type="submit"]:hover {
-            background-color: #ff5353; /* Darker maroon on hover */
-            color:#000;
+            box-shadow: 10px 15px 15px rgba(126, 0, 1, 0.3);
         }
+
         .success-message {
             color: green;
             text-align: center;
+            margin-top: 10px; 
         }
-    </style>
-</head>
+
+        </style>
+        </head>
+
 <body>
-    <div class="container">
+<div class="container">
         <?php
-        if (!$login_successful) {
-            // If login failed or hasn't been attempted, show the form
-            echo "<h2>Log In</h2>";
+        if ($login_successful) {
+            echo "<h2 class='success-message'>Access granted!!!</h2>";
+        } else {
+            echo "<h2>Log in</h2>";
             echo '<form method="POST">';
-            echo '<h3>Username: <input type="text" name="username" required><br><br></h3>';
-            echo '<h3>Password: <input type="password" name="password" required><br><br></h3>';
-            echo '<input type="submit" value="Log in">';
+            echo 'Username: <input type="text" name="username" required><br><br>';
+            echo 'Password: <input type="password" name="password" required><br><br>';
+            echo '<input type="submit" value="Login">';
             echo '</form>';
-            echo $message; // Display any error messages
+            echo $message; 
         }
         ?>
     </div>
 </body>
-</html>
+</html>        
