@@ -199,7 +199,7 @@ $conn->close();
             <input type="password" id="password" name="password" required>
 
             <div class="button-group">
-                <button type="button" class="cancel-btn">Cancel</button>
+            <button type="button" class="cancel-btn" onclick="window.location.href='manage.php';">Cancel</button>
                 <button type="submit" class="update-btn">Update</button>
             </div>
         </form>
