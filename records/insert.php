@@ -10,26 +10,42 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$record_created = false; 
+$message = "";
+$messageClass = ""; 
 
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $new_username = $_POST['username'];
-    $new_password = $_POST['password'];
+    $userId = $_POST['user_id'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    $check_user_sql = "SELECT * FROM login WHERE username = '$new_username'";
-    $check_user_result = $conn->query($check_user_sql);
+    // Check if the username already exists in the database
+    $checkSql = "SELECT * FROM login WHERE username = '$username'";
+    $checkResult = $conn->query($checkSql);
 
-    if ($check_user_result->num_rows > 0) {
-        echo "<p style='color: red; text-align: center;'>Username already exists, please choose a different one.</p>";
-    } else {
-        $sql = "INSERT INTO login (username, password) VALUES ('$new_username', '$new_password')";
-        if ($conn->query($sql) === TRUE) {
-            $record_created = true; 
-            header("Location: manage.php");
-            exit(); 
+    if ($checkResult->num_rows == 0) {
+        // Username does not exist, proceed with the insert
+        if (empty($userId)) {
+            // Insert without the id field to allow auto-increment
+            $insertSql = "INSERT INTO login (username, password) VALUES ('$username', '$password')";
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            // Insert with the id field provided
+            $insertSql = "INSERT INTO login (id, username, password) VALUES ('$userId', '$username', '$password')";
         }
+
+        if ($conn->query($insertSql) === TRUE) {
+            session_start();
+            $_SESSION['message'] = "User added successfully!";
+            $_SESSION['messageClass'] = "success";
+            header("Location: manage.php");
+            exit();
+        } else {
+            $message = "Error adding user: " . $conn->error;
+            $messageClass = "error";
+        }
+    } else {
+        $message = "Username already exists!";
+        $messageClass = "error";
     }
 }
 
@@ -41,71 +57,116 @@ $conn->close();
 <head>
     <title>Add New Record</title>
     <style>
-        body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: white;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(195, 136, 137, 1),  rgba(181,11,12,1));
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            padding: 20px;
+            flex-direction: column;
         }
+
         h2 {
-            color: #1F1F1F; /*4th*/
-            text-align: center;
+           text-align: center;
             font-size: 30px;
-            margin-bottom: 25px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
+            color: #1F1F1F; /*4th*/
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
         }
          
-        .container {
-            background-color: #F5F5F5; /*1st*/
-            border: 2px solid black;
-            border-radius: 10px;
-            padding: 20px;
-            width: 400px;
-            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2); 
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #FFFFFF; /*1st*/
+            border: 2px solid #7E0001;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 10px 10px 15px rgba(126, 0, 1, 0.3);
         }
+
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid black;
-            border-radius: 5px;
+            border-radius: 10px;
             box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
         }
-        input[type="submit"] {
-            background-color: #1F1F1F; /*4th*/
-            color: #F5F5F5; /*1st*/
-            padding: 10px;
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .cancel-btn, .insert-btn {
+            margin-top: 20px;
+            width: 130px;
+            padding: 15px 10px;
             border: none;
             border-radius: 5px;
-            width: 100%;
-            font-weight: bold;
             cursor: pointer;
+            font-size: 20px;
         }
-        input[type="submit"]:hover {
-            background-color: black;
+
+        .cancel-btn {
+            background-color: #000;
+            color: white;
+            transition: 0.3s;
         }
+
+        .insert-btn {
+            background-color: #b00000;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .cancel-btn:hover, .insert-btn:hover {
+            box-shadow: 10px 15px 15px rgba(126, 0, 1, 0.3);
+        }
+
         p {
             text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <?php if ($record_created): ?>
-            <h2 style="color: green; text-align: center;">New record created successfully!</h2>
-        <?php else: ?>
-            <h2>Add New Record</h2>
-            <form method="POST">
-                Username: <input type="text" name="username" required><br><br>
-                Password: <input type="password" name="password" required><br><br>
-                <input type="submit" value="Add">
-            </form>
-        <?php endif; ?>
+<?php if ($message): ?>
+        <div class="alert <?php echo $messageClass; ?>">
+            <?php echo $message; ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="form-container">
+        <h2>Insert User Record</h2>
+        <form method="POST" action="">
+            <label for="user_id">ID (optional):</label>
+            <input type="text" id="user_id" name="user_id">
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <div class="button-group">
+            <button type="button" class="cancel-btn" onclick="window.location.href='manage.php';">Cancel</button>
+                <button type="submit" class="insert-btn">Insert</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

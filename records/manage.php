@@ -40,14 +40,15 @@ $result = $conn->query($sql);
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: white;
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(195, 136, 137, 1),  rgba(181,11,12,1));
             color: #333;
-            padding: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            position: relative; 
+            height: 100vh;
+            padding: 20px;
+            flex-direction: column;
         }
 
         h2 {
@@ -76,22 +77,23 @@ $result = $conn->query($sql);
             width: 100%;
             max-width: 700px;
             border-collapse: collapse;
-            background-color: #CCCCCC; /*2nd*/
+            background-color: #F5F5F5; /*1st*/
             margin: auto; 
             border-radius: 10px;
             overflow: hidden;
+            box-shadow: 10px 10px 15px rgba(126, 0, 1, 0.3);
         }
 
         th, td {
             padding: 12px;
             text-align: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1.5px solid rgba(126, 0, 1, 0.1);
             font-size: 15px;
             color: black;
         }
 
         th {
-            background-color: black;
+            background-color: #b00000;
             color: #F5F5F5; /*1st*/
             font-size: 18px;
         }
@@ -129,7 +131,7 @@ $result = $conn->query($sql);
         }
 
         .button-container button {
-            background-color: #1F1F1F; /*4th*/
+            background-color: #b00000; /*4th*/
             color: #F5F5F5; /*1st*/
             border: none;
             padding: 10px 20px;
@@ -137,10 +139,11 @@ $result = $conn->query($sql);
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            transition: 0.3s;
         }
 
         .button-container button:hover {
-            background-color: black;
+            box-shadow: 10px 15px 15px rgba(126, 0, 1, 0.3);
         }
 
         input[type="checkbox"] {

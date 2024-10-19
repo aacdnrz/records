@@ -59,8 +59,8 @@ $conn->close();
         }
 
         body {
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: white;
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(195, 136, 137, 1),  rgba(181,11,12,1));
             color: #333;
             display: flex;
             justify-content: center;
@@ -74,10 +74,10 @@ $conn->close();
             width: 100%;
             max-width: 500px;
             background-color: #F5F5F5; /*1st*/
-            border: 2px solid black;
+            border: 2px solid #7E0001;
             padding: 35px;
-            border-radius: 10px;
-            box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 10px 10px 15px rgba(126, 0, 1, 0.3);
         }
 
         .alert {
@@ -102,18 +102,19 @@ $conn->close();
         }
 
         h2 {
+            font-family:  'Poppins', sans-serif;
             text-align: center;
-            font-size: 30px;
-            color: #1F1F1F; /*4th*/
+            font-size: 35px;
+            font-weight: bolder;
+            color: #7E0001; /*4th*/
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            text-shadow: 5px 2px 5px rgba(126, 0, 1, 0.3);
         }
 
         label {
             display: block;
-            font-weight: bold;
             margin-bottom: 5px;
             color: black;
         }
@@ -123,25 +124,44 @@ $conn->close();
             padding: 10px;
             margin: 10px 0;
             border: 1px solid black;
-            border-radius: 5px;
+            border-radius: 10px;
             box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
         }
 
-        input[type="submit"], .back-button {
-            width: 100%;
-            padding: 10px;
-            background-color: #1F1F1F; /*4th*/
-            color:  #F5F5F5; /*1st*/
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .cancel-btn, .update-btn {
+            margin-top: 20px;
+            width: 130px;
+            padding: 15px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px; 
+            font-size: 20px;
         }
 
-        input[type="submit"]:hover, .back-button:hover {
-            background-color: black;
+        .cancel-btn {
+            background-color: #000;
+            color: white;
+            transition: 0.3s;
         }
+
+        .update-btn {
+            background-color: #b00000;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .cancel-btn:hover, .update-btn:hover {
+            box-shadow: 10px 15px 15px rgba(126, 0, 1, 0.3);
+        }
+
     </style>
     <script>
         function hideAlert() {
@@ -178,8 +198,10 @@ $conn->close();
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <input type="submit" value="Update">
-            <button type="button" class="back-button" onclick="window.location.href='manage.php'">Back</button>
+            <div class="button-group">
+            <button type="button" class="cancel-btn" onclick="window.location.href='manage.php';">Cancel</button>
+                <button type="submit" class="update-btn">Update</button>
+            </div>
         </form>
         </div>
 </body>
