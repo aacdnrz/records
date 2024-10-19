@@ -1,5 +1,4 @@
 <?php
-// Step 1: Connect to the database
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -7,13 +6,12 @@ $dbname = "maestro";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check the connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 $message = "";
-$messageClass = "";
+$messageClass = ""; 
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -55,13 +53,10 @@ $conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insert User Record</title>
+    <title>Add New Record</title>
     <style>
-        /* Styling for the entire page */
         * {
             margin: 0;
             padding: 0;
@@ -69,8 +64,8 @@ $conn->close();
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            background-image: linear-gradient(rgba(255, 255, 255, 1), rgba(195, 136, 137, 1),  rgba(181,11,12,1));
             color: #333;
             display: flex;
             justify-content: center;
@@ -80,82 +75,76 @@ $conn->close();
             flex-direction: column;
         }
 
-        .form-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .alert {
-            width: 100%;
-            padding: 15px;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .alert.success {
-            background-color: #4CAF50; /* Green background for success */
-        }
-
-        .alert.error {
-            background-color: #f44336; /* Red background for error */
-        }
-
         h2 {
-            text-align: center;
-            font-size: 28px;
-            color: maroon;
+           text-align: center;
+            font-size: 30px;
+            color: #1F1F1F; /*4th*/
             margin-bottom: 25px;
             text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
         }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #333;
+         
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #FFFFFF; /*1st*/
+            border: 2px solid #7E0001;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 10px 10px 15px rgba(126, 0, 1, 0.3);
         }
 
         input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            color: #333;
+            margin: 10px 0;
+            border: 1px solid black;
+            border-radius: 10px;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: center;
         }
 
-        input[type="submit"], .back-button {
-            width: 100%;
-            padding: 10px;
-            background-color: maroon;
-            color: #fff;
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .cancel-btn, .insert-btn {
+            margin-top: 20px;
+            width: 130px;
+            padding: 15px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 18px;
-            margin-top: 10px;
-            text-align: center;
-            display: block;
-            text-decoration: none;
+            font-size: 20px;
         }
 
-        input[type="submit"]:hover, .back-button:hover {
-            background-color: #a94442;
+        .cancel-btn {
+            background-color: #000;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .insert-btn {
+            background-color: #b00000;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .cancel-btn:hover, .insert-btn:hover {
+            box-shadow: 10px 15px 15px rgba(126, 0, 1, 0.3);
+        }
+
+        p {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <?php if ($message): ?>
+<?php if ($message): ?>
         <div class="alert <?php echo $messageClass; ?>">
             <?php echo $message; ?>
         </div>
@@ -173,9 +162,11 @@ $conn->close();
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <input type="submit" value="Insert">
+            <div class="button-group">
+            <button type="button" class="cancel-btn" onclick="window.location.href='manage.php';">Cancel</button>
+                <button type="submit" class="insert-btn">Insert</button>
+            </div>
         </form>
-        <a href="manage.php" class="back-button">Back</a>
     </div>
 </body>
 </html>
